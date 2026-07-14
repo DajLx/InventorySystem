@@ -1,0 +1,12 @@
+node/node_modules/
+java/nbproject/private/
+java/nbproject/build/
+java/nbproject/dist/
+java/nbproject/project.properties.properties
+java/nbproject/project.xml.properties
+*.class
+*.jar
+*.war
+*.ear
+
+
