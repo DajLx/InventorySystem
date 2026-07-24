@@ -1,7 +1,6 @@
-const express= require("express")
-const router= express.Router();
+const express = require("express");
+const router = express.Router();
+const { getAllProveedors } = require("../controller/proveedores");
+router.get("/", getAllProveedors);
 
-// aca iran todos los endpoints de proveedores.
-
-
-module.exports= router;
+module.exports = router;

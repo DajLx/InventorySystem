@@ -4,8 +4,12 @@
  */
 package views;
 
-import encrypt.Encrypt;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import javax.swing.JOptionPane;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  *
@@ -42,6 +46,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel2.setText("Usuario:");
 
+        userText.setText("admin@admin.com");
         userText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userTextActionPerformed(evt);
@@ -57,7 +62,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        pwdText.setText("123");
+        pwdText.setText("Administrador1?.");
         pwdText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pwdTextActionPerformed(evt);
@@ -79,13 +84,13 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(userText, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pwdText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pwdText, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                            .addComponent(userText)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(logibButton)))
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,16 +118,35 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_userTextActionPerformed
 
     private void logibButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logibButtonActionPerformed
-        if (new String (pwdText.getPassword()).equals("123")) {
-            JOptionPane.showMessageDialog(this, "logueado correctamente");
-            Menu menu= new Menu();
-            menu.setVisible(true);
-            this.dispose();
-            menu.pack();
-            
-        }else{
-            JOptionPane.showMessageDialog(this, "logueado incorrectamente");
+
+        JsonObject json = new JsonObject();
+        json.addProperty("email", userText.getText());
+        json.addProperty("pass", new String(pwdText.getPassword()));
+        RequestBody bodyTosend = RequestBody.create(json.toString(), Connection.getJSON());
+        Request req= Connection.createBuilder("/usuarios/login").post(bodyTosend).build();
+//Connection.setReq(Connection.setBuilderQuery("/usuarios/login").post(bodyTosend).build());
+        try (Response res = Connection.getClient().newCall(req).execute()) {
+            System.out.println("dlkjdf");
+            System.out.println(res);
+            JsonObject body = JsonParser.parseString(res.body().string()).getAsJsonObject();
+            System.out.println(body);
+            System.out.println("hhh");
+            if (body.get("found").getAsBoolean()) {
+
+                JOptionPane.showMessageDialog(this, "logueado correctamente");
+                Menu menu = new Menu();
+                menu.setVisible(true);
+                this.dispose();
+                menu.pack();
+
+            }else{
+                JOptionPane.showMessageDialog(this, body.get("error").getAsString());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "algun inesperado a ocurrido");
         }
+
+
     }//GEN-LAST:event_logibButtonActionPerformed
 
     private void pwdTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwdTextActionPerformed
