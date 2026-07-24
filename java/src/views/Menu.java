@@ -125,7 +125,7 @@ public class Menu extends javax.swing.JFrame {
         deleteWindows();
         JMenu jm = (JMenu) evt.getSource();
         String key = jm.getText();
-        io = new InformationOfOption(columnIdentifiers.get(key), key.replaceAll(".$", ""));
+        io = new InformationOfOption(columnIdentifiers.get(key), key);
         getContentPane().add(io);
         pack();
     }//GEN-LAST:event_getInformationTable

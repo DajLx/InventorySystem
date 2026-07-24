@@ -1,7 +1,7 @@
 const express= require("express")
 const router= express.Router();
-
-// aca iran todos los endpoints de categorias.
+const {getAllCategories}= require("../controller/categoria")
+router.get("/",getAllCategories)
 
 
 module.exports= router;

@@ -1,6 +1,10 @@
 package views;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import javax.swing.table.DefaultTableModel;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -19,19 +23,27 @@ public class InformationOfOption extends javax.swing.JPanel {
 
     public InformationOfOption(String[] columnIdentifiers, String key) {
         initComponents();
-        configuringBotons( key);
+        configuringBotons(key.replaceAll(".$", ""));
         table = new DefaultTableModel();
-        table.setColumnIdentifiers(columnIdentifiers);
-        Object[] row = new Object[columnIdentifiers.length-1];
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < columnIdentifiers.length-1; j++) {
-                System.out.println((i + 1) * (j + 1));
-                row[j] = (i + 1) * (j + 1);
+        Request req=Connection.createBuilder("/%s".formatted(key.toLowerCase())).get().build();
+        try (Response res = Connection.getClient().newCall(req).execute()) {
+            if (res.isSuccessful()) {
+                JsonArray body = JsonParser.parseString(res.body().string()).getAsJsonArray();
+                table.setColumnIdentifiers(columnIdentifiers);
+                
+                Object[] row = new Object[columnIdentifiers.length - 1];
+                for (int i = 0; i < body.size() ; i++) {
+                    for (int j = 0; j < columnIdentifiers.length - 1; j++) {
+                        System.out.println(body.get(i).getAsJsonObject());
+                        row[j] = body.get(i).getAsJsonObject().get(columnIdentifiers[j]).getAsString();
+                    }
+                    table.addRow(row);
+                }
+                informationTbl.setModel(table);
             }
-            table.addRow(row);
+
+        } catch (Exception e) {
         }
-        informationTbl.setModel(table);
-        
 
     }
 
