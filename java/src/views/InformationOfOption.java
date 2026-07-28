@@ -2,7 +2,11 @@ package views;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import java.util.Arrays;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -19,32 +23,50 @@ public class InformationOfOption extends javax.swing.JPanel {
     /**
      * Creates new form ProductosTable
      */
+    String[] columnIdentifiers;
+    String key;
     DefaultTableModel table;
+    CreateInformation ci;
+    JTableHeader headers;
 
     public InformationOfOption(String[] columnIdentifiers, String key) {
+        this.columnIdentifiers = columnIdentifiers;
+        this.key = key;
         initComponents();
         configuringBotons(key.replaceAll(".$", ""));
-        table = new DefaultTableModel();
-        Request req=Connection.createBuilder("/%s".formatted(key.toLowerCase())).get().build();
+
+        table = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        RequestForGetProducts(key, columnIdentifiers,"1");
+        informationTbl.setModel(table);
+        headers = informationTbl.getTableHeader();
+
+    }
+
+    private void RequestForGetProducts(String key1, String[] columnIdentifiers1,String sort) throws Error {
+        Request req = Connection.createBuilder("/%s/%s".formatted(key1.toLowerCase(),sort)).get().build();
         try (Response res = Connection.getClient().newCall(req).execute()) {
             if (res.isSuccessful()) {
                 JsonArray body = JsonParser.parseString(res.body().string()).getAsJsonArray();
-                table.setColumnIdentifiers(columnIdentifiers);
-                
-                Object[] row = new Object[columnIdentifiers.length - 1];
-                for (int i = 0; i < body.size() ; i++) {
-                    for (int j = 0; j < columnIdentifiers.length - 1; j++) {
-                        System.out.println(body.get(i).getAsJsonObject());
-                        row[j] = body.get(i).getAsJsonObject().get(columnIdentifiers[j]).getAsString();
+                String[] forTitles = Arrays.stream(columnIdentifiers1).map(x -> x.split("\\|")[0]).toArray(String[]::new);
+                table.setColumnIdentifiers(forTitles);
+                Object[] row = new Object[columnIdentifiers1.length - 1];
+                for (int i = 0; i < body.size(); i++) {
+                    for (int j = 0; j < columnIdentifiers1.length - 1; j++) {
+                        row[j] = body.get(i).getAsJsonObject().get(columnIdentifiers1[j].split("\\|")[0]).getAsString();
                     }
                     table.addRow(row);
                 }
                 informationTbl.setModel(table);
+                
             }
-
-        } catch (Exception e) {
+        }catch (Exception e) {
+            throw new Error(e);
         }
-
     }
 
     private void configuringBotons(String key) {
@@ -65,10 +87,39 @@ public class InformationOfOption extends javax.swing.JPanel {
         newSomething = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         informationTbl = new javax.swing.JTable();
+        informationTbl.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int colVisual = informationTbl.getTableHeader().columnAtPoint(e.getPoint());
+                if (colVisual != -1) {
+                    String nombre = informationTbl.getColumnName(colVisual);            
+                    table.setRowCount(0);
+                    System.out.println("me tocaron");
+                    System.out.println(nombre);
+                    RequestForGetProducts(key, columnIdentifiers, nombre);
+                }
+            }
+        });
+
+        addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+                addSome(evt);
+            }
+        });
 
         searcher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searcherActionPerformed(evt);
+            }
+        });
+
+        newSomething.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newSomethingActionPerformed(evt);
             }
         });
 
@@ -83,6 +134,11 @@ public class InformationOfOption extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        informationTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                informationTblMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(informationTbl);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -113,6 +169,30 @@ public class InformationOfOption extends javax.swing.JPanel {
     private void searcherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searcherActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searcherActionPerformed
+
+    private void addSome(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_addSome
+        addSome();
+    }//GEN-LAST:event_addSome
+
+    private void newSomethingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSomethingActionPerformed
+        addSome();
+        ci = new CreateInformation(columnIdentifiers);
+        JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
+        jf.add(ci);
+        jf.pack();
+    }//GEN-LAST:event_newSomethingActionPerformed
+
+    private void informationTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_informationTblMouseClicked
+        System.out.println(informationTbl.getSelectedColumn());
+        System.out.println(informationTbl.getSelectedRow());
+    }//GEN-LAST:event_informationTblMouseClicked
+
+    private void addSome() {
+        System.out.println("me ejecuto antes que el otro");
+        JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
+        Utils.deleteWindows(jf, ci);
+
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

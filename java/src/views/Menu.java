@@ -19,6 +19,7 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form Menu
      */
     InformationOfOption io;
+    CreateInformation ci;
     Map<String, String[]> columnIdentifiers = new HashMap<>();
 
     public Menu() {
@@ -28,30 +29,28 @@ public class Menu extends javax.swing.JFrame {
 
     private void gettingIdentifiersForTables() {
         columnIdentifiers.put("Productos", new String[]{
-            "ID",
-            "Nombre",
-            "Categoria",
-            "Stock",
-            "Precio",
-            "Acciones",
+            "ID|f",
+            "Nombre|t",
+            "Categoria|t",
+            "Stock|t",
+            "Precio|t",
+            "Acciones|f",
         });
 
         columnIdentifiers.put("Categorias", new String[]{
-            "ID",
-            "Nombre Categoria",
-            "Cantidad Productos",
-            "Acciones",
-                
+            "ID|f",
+            "Nombre Categoria|t",
+            "Cantidad Productos|f",
+            "Acciones|f",
         });
 
         columnIdentifiers.put("Proveedores", new String[]{
-            "ID",
-            "Nombre Proveedor",
-            "Contacto",
-            "Teléfono",
-            "Email",
-            "Acciones",
-                
+            "ID|f",
+            "Nombre Proveedor|t",
+            "Contacto|t",
+            "Teléfono|t",
+            "Email|t",
+            "Acciones|f",
         });
 
         columnIdentifiers.put("Pedidos Web", new String[]{ // No se aprecia la tabla en las imágenes proporcionadas.
@@ -122,7 +121,8 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void getInformationTable(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_getInformationTable
-        deleteWindows();
+
+        Utils.deleteWindows(this, io);
         JMenu jm = (JMenu) evt.getSource();
         String key = jm.getText();
         io = new InformationOfOption(columnIdentifiers.get(key), key);
@@ -130,12 +130,7 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }//GEN-LAST:event_getInformationTable
 
-    private void deleteWindows() {
-        try {
-            getContentPane().remove(io);
-        } catch (Exception e) {
-        }
-    }
+   
 
     /**
      * @param args the command line arguments

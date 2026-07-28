@@ -10,3 +10,4 @@ java/nbproject/project.xml.properties
 *.ear
 
 
+/java/dist/
