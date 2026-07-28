@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Events>
+    <EventHandler event="ancestorRemoved" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="addSome"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -48,6 +51,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="newSomething">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newSomethingActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -67,6 +73,12 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="informationTblMouseClicked"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="informationTbl.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {&#xd;&#xa;    @Override&#xd;&#xa;    public void mouseClicked(java.awt.event.MouseEvent e) {&#xd;&#xa;        int colVisual = informationTbl.getTableHeader().columnAtPoint(e.getPoint());&#xd;&#xa;        if (colVisual != -1) {&#xd;&#xa;            String nombre = informationTbl.getColumnName(colVisual);            &#xd;&#xa;            table.setRowCount(0);&#xd;&#xa;            System.out.println(&quot;me tocaron&quot;);&#xd;&#xa;System.out.println(nombre);&#xd;&#xa;            RequestForGetProducts(key, columnIdentifiers, nombre);&#xd;&#xa;        }&#xd;&#xa;    }&#xd;&#xa;});"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
