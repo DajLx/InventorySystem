@@ -1,13 +1,23 @@
 import { useState } from "react";
-import "./App.css";
+import { Routes, Route } from "react-router";
+
+import Home from "./components/Home";
+import AuthLayout from "./components/AuthLayout";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>Hello world</h1>
-    </>
+    <div id="app-box">
+      <Routes>
+        <Route index element={<Home />} />
+
+        <Route element={<AuthLayout />}>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 
