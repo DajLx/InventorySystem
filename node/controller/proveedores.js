@@ -2,7 +2,7 @@ const ProveedoresServices= require("../services/proveedoresServices")
 
 const getAllProveedors = async (req,res) => {
     try {
-        const proveedors= await ProveedoresServices.getProvers(req.params.sort);
+        const proveedors= await ProveedoresServices.getProvers();
         
         res.status(200).send(proveedors)
     } catch (error) {

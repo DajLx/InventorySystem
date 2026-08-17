@@ -2,7 +2,7 @@ const ProductsServices = require("../services/productosServices");
 const getAllProducts = async (req, res) => {
   try {
 
-    const products = await ProductsServices.getProducts(req.params.sort);
+    const products = await ProductsServices.getProducts();
     
     res.status(200).send(products)
   } catch (error) {
