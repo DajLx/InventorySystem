@@ -7,5 +7,7 @@
 body {
   min-height: 100vh;
 
-  overflow: hidden;
+  overflow: scroll;
 }
+
+@import "./scss/authLayout.scss";
