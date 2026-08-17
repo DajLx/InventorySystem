@@ -2,7 +2,12 @@ package views;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -24,6 +29,7 @@ public class InformationOfOption extends javax.swing.JPanel {
      * Creates new form ProductosTable
      */
     String[] columnIdentifiers;
+    String[] columnsCleans;
     String key;
     DefaultTableModel table;
     CreateInformation ci;
@@ -41,32 +47,47 @@ public class InformationOfOption extends javax.swing.JPanel {
                 return false;
             }
         };
-        RequestForGetProducts(key, columnIdentifiers,"1");
+        RequestForGetProducts(key, "1");
         informationTbl.setModel(table);
         headers = informationTbl.getTableHeader();
 
     }
 
-    private void RequestForGetProducts(String key1, String[] columnIdentifiers1,String sort) throws Error {
-        Request req = Connection.createBuilder("/%s/%s".formatted(key1.toLowerCase(),sort)).get().build();
+    private void RequestForGetProducts(String key1, String sort) throws Error {
+        Request req = Connection.createBuilder("/%s/%s".formatted(key1.toLowerCase(), sort)).get().build();
         try (Response res = Connection.getClient().newCall(req).execute()) {
             if (res.isSuccessful()) {
+                //JsonParser.parseString(res.body().string()).getAsJsonArray().asList();
                 JsonArray body = JsonParser.parseString(res.body().string()).getAsJsonArray();
-                String[] forTitles = Arrays.stream(columnIdentifiers1).map(x -> x.split("\\|")[0]).toArray(String[]::new);
-                table.setColumnIdentifiers(forTitles);
-                Object[] row = new Object[columnIdentifiers1.length - 1];
-                for (int i = 0; i < body.size(); i++) {
-                    for (int j = 0; j < columnIdentifiers1.length - 1; j++) {
-                        row[j] = body.get(i).getAsJsonObject().get(columnIdentifiers1[j].split("\\|")[0]).getAsString();
-                    }
-                    table.addRow(row);
-                }
-                informationTbl.setModel(table);
-                
+                columnsCleans = Arrays.stream(columnIdentifiers).map(x -> x.split("\\|")[0]).toArray(String[]::new);
+                table.setColumnIdentifiers(columnsCleans);
+                fillTheTable(body,"ID");
+
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new Error(e);
         }
+    }
+
+    private void fillTheTable(JsonArray body, String column) {
+        Object[] row = new Object[columnIdentifiers.length];
+        JsonPrimitive je;
+        for (int i = 0; i < body.size(); i++) {
+            for (int j = 0; j < columnIdentifiers.length - 1; j++) {
+                je = body.get(i).getAsJsonObject().get(columnsCleans[j]).getAsJsonPrimitive();
+                if (je.isNumber()) {
+                    if(columnsCleans[j].equalsIgnoreCase("precio")){
+                        row[j] = je.getAsFloat();    
+                    }else{
+                    row[j] = je.getAsInt() ;}
+                    
+                } else {
+                    row[j] = je.getAsString();
+                }
+            }
+            table.addRow(row);
+        }
+        informationTbl.setModel(table);
     }
 
     private void configuringBotons(String key) {
@@ -91,12 +112,16 @@ public class InformationOfOption extends javax.swing.JPanel {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 int colVisual = informationTbl.getTableHeader().columnAtPoint(e.getPoint());
+                String columnName= informationTbl.getColumnName(colVisual);
                 if (colVisual != -1) {
-                    String nombre = informationTbl.getColumnName(colVisual);            
+
+                    Object[][] info=getTableInfo();
+                    System.out.println("this is the info before sort \n %s".formatted(info));
+                    JsonArray body= sortTableInformation(info, colVisual);
+                    System.out.println("this is the body \n %s".formatted(body));
+
                     table.setRowCount(0);
-                    System.out.println("me tocaron");
-                    System.out.println(nombre);
-                    RequestForGetProducts(key, columnIdentifiers, nombre);
+                    fillTheTable(body, columnName);
                 }
             }
         });
@@ -183,16 +208,53 @@ public class InformationOfOption extends javax.swing.JPanel {
     }//GEN-LAST:event_newSomethingActionPerformed
 
     private void informationTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_informationTblMouseClicked
-        System.out.println(informationTbl.getSelectedColumn());
-        System.out.println(informationTbl.getSelectedRow());
+
     }//GEN-LAST:event_informationTblMouseClicked
 
     private void addSome() {
-        System.out.println("me ejecuto antes que el otro");
+        
         JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
         Utils.deleteWindows(jf, ci);
 
     }
+
+    private JsonArray sortTableInformation (Object[][] information, int columnIndex) {
+        JsonArray ja = new JsonArray();
+        Gson gson = new Gson();
+        
+        Arrays.stream(information).sorted(Comparator.comparing(x -> (Comparable) x[columnIndex])).forEach(x -> {
+            Object[] vec = (Object[]) x;
+            JsonObject jo = new JsonObject();
+            for (int i = 0; i < vec.length; i++) {
+                
+                if (vec[i] instanceof Number) {
+                    jo.addProperty(informationTbl.getColumnName(i), (Number) vec[i]); 
+                } else {
+                    jo.addProperty(informationTbl.getColumnName(i), (String) vec[i]); 
+                }
+            }
+            ja.add(jo);
+
+        });
+        System.out.println("");
+        return ja;
+
+    }
+    private Object[][] getTableInfo() {
+        int columnsCount=table.getColumnCount();
+        int rowsCount=table.getRowCount();
+        Object[][] information= new Object[rowsCount][columnsCount];
+        for (int i = 0; i < rowsCount; i++) {
+            for (int j = 0; j < columnsCount; j++) {
+                System.out.println("productos");
+                System.out.printf("%s -- ",informationTbl.getValueAt(i, j));
+                information[i][j]= informationTbl.getValueAt(i, j);
+            }
+            
+        }
+        return information;
+    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
