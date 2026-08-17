@@ -5,11 +5,8 @@
 package views;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import java.awt.Dimension;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -23,32 +20,24 @@ public class CreateInformation extends javax.swing.JPanel {
      */
     public CreateInformation(String[] columnIdentifiers) {
         initComponents();
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        System.out.println("agregando...");
+        String[] dataAndCheck;
         for (String columnIdentifier : columnIdentifiers) {
-            System.out.println(columnIdentifier);
-            if (columnIdentifier.contains("|t")) {
-                JLabel jl = new JLabel();
-                jl.setText("%s :".formatted(columnIdentifier.split("\\|")[0]));
-                jl.setAlignmentX(Component.LEFT_ALIGNMENT);
-                JTextField infoToAdd = new JTextField(10);
-                this.add(jl);
-                this.add(infoToAdd);
+            dataAndCheck = columnIdentifier.split("\\|");
+            if (dataAndCheck[1].equalsIgnoreCase("t")) {
+                
+                System.out.println(dataAndCheck[0]);
+                JLabel label= new JLabel(dataAndCheck[0]);
+                JTextField text= new JTextField(15);
+                label.setAlignmentX(Component.LEFT_ALIGNMENT);
+                text.setAlignmentX(Component.LEFT_ALIGNMENT);
+                infoToAdd.add(label);
+                infoToAdd.add(text);
+                
             }
+
         }
-        JPanel panelBotones = new JPanel();
-        panelBotones.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); // Centrados y con separación
-
-        // 5. Crear y agregar los botones al panel secundario
-        JButton btnGuardar = new JButton("Guardar");
-        JButton btnCancelar = new JButton("Cancelar");
-        panelBotones.add(btnGuardar);
-        panelBotones.add(btnCancelar);
-        panelBotones.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        this.add(panelBotones);
-        this.revalidate();
-        this.repaint();
+        Dimension size=infoToAdd.getPreferredSize();
+        infoToAdd.setPreferredSize(size);
 
     }
 
@@ -61,19 +50,45 @@ public class CreateInformation extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        infoToAdd = new javax.swing.JPanel();
+
+        jToggleButton1.setText("Guardar");
+
+        jToggleButton2.setText("Cancelar");
+
+        infoToAdd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        infoToAdd.setLayout(new javax.swing.BoxLayout(infoToAdd, javax.swing.BoxLayout.PAGE_AXIS));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(infoToAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jToggleButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+                .addComponent(jToggleButton2)
+                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 312, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(infoToAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jToggleButton1)
+                    .addComponent(jToggleButton2))
+                .addContainerGap(315, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel infoToAdd;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
     // End of variables declaration//GEN-END:variables
 }

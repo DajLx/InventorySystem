@@ -50,7 +50,7 @@ public class InformationOfOption extends javax.swing.JPanel {
         RequestForGetProducts(key, "1");
         informationTbl.setModel(table);
         headers = informationTbl.getTableHeader();
-
+Container.setVisible(false);
     }
 
     private void RequestForGetProducts(String key1, String sort) throws Error {
@@ -125,6 +125,7 @@ public class InformationOfOption extends javax.swing.JPanel {
                 }
             }
         });
+        Container = new javax.swing.JPanel();
 
         addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
@@ -166,27 +167,41 @@ public class InformationOfOption extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(informationTbl);
 
+        Container.setOpaque(false);
+        Container.setLayout(new javax.swing.BoxLayout(Container, javax.swing.BoxLayout.PAGE_AXIS));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(searcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
-                .addComponent(newSomething)
-                .addGap(42, 42, 42))
-            .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(searcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(124, 124, 124)
+                        .addComponent(newSomething)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Container, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newSomething, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Container, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(newSomething, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -196,27 +211,29 @@ public class InformationOfOption extends javax.swing.JPanel {
     }//GEN-LAST:event_searcherActionPerformed
 
     private void addSome(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_addSome
-        addSome();
+        
     }//GEN-LAST:event_addSome
 
     private void newSomethingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSomethingActionPerformed
-        addSome();
-        ci = new CreateInformation(columnIdentifiers);
+        
         JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
-        jf.add(ci);
+        ci = new CreateInformation(columnIdentifiers);
+        Container.add(ci);
+        Container.setVisible(true);
+        Container.revalidate();
+        Container.repaint();
+        
         jf.pack();
+        
+        
+        
     }//GEN-LAST:event_newSomethingActionPerformed
 
     private void informationTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_informationTblMouseClicked
 
     }//GEN-LAST:event_informationTblMouseClicked
 
-    private void addSome() {
-        
-        JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
-        Utils.deleteWindows(jf, ci);
-
-    }
+    
 
     private JsonArray sortTableInformation (Object[][] information, int columnIndex) {
         JsonArray ja = new JsonArray();
@@ -258,6 +275,7 @@ public class InformationOfOption extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Container;
     private javax.swing.JTable informationTbl;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton newSomething;
