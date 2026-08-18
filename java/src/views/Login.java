@@ -4,9 +4,12 @@
  */
 package views;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -123,7 +126,7 @@ public class Login extends javax.swing.JFrame {
         json.addProperty("email", userText.getText());
         json.addProperty("pass", new String(pwdText.getPassword()));
         RequestBody bodyTosend = RequestBody.create(json.toString(), Connection.getJSON());
-        Request req= Connection.createBuilder("/usuarios/login").post(bodyTosend).build();
+        Request req = Connection.createBuilder("/usuarios/login").post(bodyTosend).build();
 //Connection.setReq(Connection.setBuilderQuery("/usuarios/login").post(bodyTosend).build());
         try (Response res = Connection.getClient().newCall(req).execute()) {
             System.out.println("dlkjdf");
@@ -135,11 +138,13 @@ public class Login extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "logueado correctamente");
                 Menu menu = new Menu();
-                menu.setVisible(true);
-                this.dispose();
                 menu.pack();
+                menu.setVisible(true);
+                dispose();
+                
+                
 
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, body.get("error").getAsString());
             }
         } catch (Exception e) {
@@ -179,8 +184,16 @@ public class Login extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+       
         /* Create and display the form */
+         try {
+            UIManager.setLookAndFeel(new FlatMacDarkLaf());
+            UIManager.put("TitlePane.menuBarEmbedded",false);
+            
+            System.out.println("Estilo inicializado");
+        } catch (Exception e) {
+            System.out.println("No se pudo inicializar el estilo");
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);

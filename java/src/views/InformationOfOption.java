@@ -5,9 +5,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -39,6 +39,7 @@ public class InformationOfOption extends javax.swing.JPanel {
         this.columnIdentifiers = columnIdentifiers;
         this.key = key;
         initComponents();
+        putClientProperty("FlatClientProperties.STYLE", "arc:1000");
         configuringBotons(key.replaceAll(".$", ""));
 
         table = new DefaultTableModel() {
@@ -125,8 +126,16 @@ Container.setVisible(false);
                 }
             }
         });
+
+        informationTbl.getTableHeader().setOpaque(false);
+        informationTbl.getTableHeader().setBackground(new Color(33,42,57));
+        //informationTbl.getTableHeader().setBackground(new Color(33,42,57));
+
+        this.putClientProperty("FlatClientProperties.STYLE", "arc:30");
         Container = new javax.swing.JPanel();
 
+        setBackground(new java.awt.Color(33, 42, 57));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             }
@@ -149,6 +158,7 @@ Container.setVisible(false);
             }
         });
 
+        informationTbl.setBackground(new java.awt.Color(33, 42, 57));
         informationTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -167,6 +177,7 @@ Container.setVisible(false);
         });
         jScrollPane1.setViewportView(informationTbl);
 
+        Container.setBackground(new java.awt.Color(33, 42, 57));
         Container.setOpaque(false);
         Container.setLayout(new javax.swing.BoxLayout(Container, javax.swing.BoxLayout.PAGE_AXIS));
 
@@ -185,7 +196,7 @@ Container.setVisible(false);
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(Container, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)))
+                        .addComponent(Container, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -197,10 +208,10 @@ Container.setVisible(false);
                         .addComponent(Container, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(newSomething, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(newSomething, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );

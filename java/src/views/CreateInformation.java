@@ -54,11 +54,13 @@ public class CreateInformation extends javax.swing.JPanel {
         jToggleButton2 = new javax.swing.JToggleButton();
         infoToAdd = new javax.swing.JPanel();
 
+        setOpaque(false);
+
         jToggleButton1.setText("Guardar");
 
         jToggleButton2.setText("Cancelar");
 
-        infoToAdd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        infoToAdd.setOpaque(false);
         infoToAdd.setLayout(new javax.swing.BoxLayout(infoToAdd, javax.swing.BoxLayout.PAGE_AXIS));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -76,12 +78,12 @@ public class CreateInformation extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(infoToAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(infoToAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton1)
                     .addComponent(jToggleButton2))
-                .addContainerGap(315, Short.MAX_VALUE))
+                .addContainerGap(316, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -4,7 +4,7 @@
  */
 package views;
 
-import java.awt.event.MouseEvent;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JMenu;
@@ -20,11 +20,15 @@ public class Menu extends javax.swing.JFrame {
      */
     InformationOfOption io;
     CreateInformation ci;
+    InvoiceCreator ic;
     Map<String, String[]> columnIdentifiers = new HashMap<>();
 
     public Menu() {
         initComponents();
         gettingIdentifiersForTables();
+
+        getContentPane().setBackground(new Color(19, 27, 40));
+
     }
 
     private void gettingIdentifiersForTables() {
@@ -34,15 +38,13 @@ public class Menu extends javax.swing.JFrame {
             "Categoria|t",
             "Stock|t",
             "Precio|t",
-            "Acciones|f",
-        });
+            "Acciones|f",});
 
         columnIdentifiers.put("Categorias", new String[]{
             "ID|f",
             "Nombre Categoria|t",
             "Cantidad Productos|f",
-            "Acciones|f",
-        });
+            "Acciones|f",});
 
         columnIdentifiers.put("Proveedores", new String[]{
             "ID|f",
@@ -50,8 +52,7 @@ public class Menu extends javax.swing.JFrame {
             "Contacto|t",
             "Teléfono|t",
             "Email|t",
-            "Acciones|f",
-        });
+            "Acciones|f",});
 
         columnIdentifiers.put("Pedidos Web", new String[]{ // No se aprecia la tabla en las imágenes proporcionadas.
         // Completa estos títulos cuando tengas esa captura.
@@ -80,6 +81,11 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.FlowLayout());
 
+        jMenuBar1.setBackground(new java.awt.Color(19, 27, 40));
+        jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
+        jMenuBar1.setOpaque(true);
+
+        ProductsInformation.setBackground(new java.awt.Color(19, 27, 40));
         ProductsInformation.setText("Productos");
         ProductsInformation.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -96,6 +102,7 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu3);
 
+        jMenu1.setBackground(new java.awt.Color(19, 27, 40));
         jMenu1.setText("Proveedores");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -113,6 +120,16 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1.add(jMenu4);
 
         jMenu2.setText("Crear Factura");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -130,7 +147,18 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }//GEN-LAST:event_getInformationTable
 
-   
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        System.out.println("estoy entrando aca en el metodo");
+        Utils.deleteWindows(this, ic);
+        ic = new InvoiceCreator();
+        getContentPane().add(ic);
+        pack();
+
+    }//GEN-LAST:event_jMenu2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -141,22 +169,6 @@ public class Menu extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
         //</editor-fold>
 
         /* Create and display the form */
