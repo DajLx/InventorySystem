@@ -5,12 +5,23 @@ import Home from "./components/Home";
 import AuthLayout from "./components/AuthLayout";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
+import Products from "./components/home/Products";
+import Categories from "./components/home/Categories";
+import Suppliers from "./components/home/Suppliers";
+import WebOrders from "./components/home/WebOrders";
+import CreateInvoice from "./components/home/CreateInvoice";
 
 function App() {
   return (
     <div id="app-container">
       <Routes>
-        <Route index element={<Home />} />
+        <Route path="/" element={<Home />}>
+          <Route index element={<Products />} />
+          <Route path="categories" element={<Categories />} />
+          <Route path="suppliers" element={<Suppliers />} />
+          <Route path="web-orders" element={<WebOrders />} />
+          <Route path="create-invoice" element={<CreateInvoice />} />
+        </Route>
 
         <Route element={<AuthLayout />}>
           <Route path="login" element={<Login />} />

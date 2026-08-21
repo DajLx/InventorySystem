@@ -1,16 +1,19 @@
+import { Outlet } from "react-router";
+
 import Nav from "./home/Nav";
 
 function Home() {
   return (
-    <div id="homepage-box">
-      <Nav />
+    <div id="main-container">
+      <div id="main-card">
+        <header id="main-header">
+          <Nav />
+        </header>
 
-      <p>
-        Aquí saldrán las secciones resultados del{" "}
-        <b>
-          <i>nav</i>
-        </b>
-      </p>
+        <main id="main-body">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

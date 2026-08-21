@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 
 function Login() {
   const [data, setData] = useState({
@@ -41,11 +41,11 @@ function Login() {
         </button>
 
         <div className="auth-alternatives-container">
+          {/* <button className="alter-bttn" type="button">
+            <Link to={"/password-recovery"}>Forgot your Password?</Link>
+          </button> */}
           <button className="alter-bttn" type="button">
-            <NavLink to={"/password-recovery"}>Forgot your Password?</NavLink>
-          </button>
-          <button className="alter-bttn" type="button">
-            <NavLink to={"/signup"}>Sign Up</NavLink>
+            <Link to={"/signup"}>Sign Up</Link>
           </button>
         </div>
       </form>

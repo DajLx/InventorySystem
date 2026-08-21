@@ -3,19 +3,31 @@ import { NavLink } from "react-router";
 function Nav() {
   return (
     <nav id="main-nav">
-      <i>this is the nav</i>
-      <ul>
+      <ul id="main-nav-ul">
         <li>
-          <NavLink to="/productos">Productos</NavLink>
+          <button className="nav-bttn" type="button">
+            <NavLink to={"/"}>Products</NavLink>
+          </button>
         </li>
         <li>
-          <NavLink to="/categorias">Categorías</NavLink>
+          <button className="nav-bttn" type="button">
+            <NavLink to={"/categories"}>Categories</NavLink>
+          </button>
         </li>
         <li>
-          <NavLink to="/proveedores">Proveedores</NavLink>
+          <button className="nav-bttn" type="button">
+            <NavLink to={"/suppliers"}>Suppliers</NavLink>
+          </button>
         </li>
         <li>
-          <NavLink to="/pedidos-web">Pedidos web</NavLink>
+          <button className="nav-bttn" type="button">
+            <NavLink to={"/web-orders"}>Web orders</NavLink>
+          </button>
+        </li>
+        <li>
+          <button className="nav-bttn" type="button">
+            <NavLink to={"/create-invoice"}>Create invoice</NavLink>
+          </button>
         </li>
       </ul>
     </nav>

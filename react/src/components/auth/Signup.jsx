@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 
 function Signup() {
   const [data, setData] = useState({
@@ -48,7 +48,7 @@ function Signup() {
 
         <div className="auth-alternatives-container">
           <button className="alter-bttn" type="button">
-            <NavLink to={"/login"}>Do you already have an account?</NavLink>
+            <Link to={"/login"}>Have you signed up yet?</Link>
           </button>
         </div>
       </form>
