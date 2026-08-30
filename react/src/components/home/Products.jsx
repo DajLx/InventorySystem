@@ -28,10 +28,12 @@ function Products() {
         <td>{price}</td>
         <td>
           <button type="button">
-            <i className="fa-regular fa-pen-to-square"></i>Edit
+            <i className="fa-regular fa-pen-to-square" aria-hidden="true"></i>
+            Edit
           </button>
           <button type="button">
-            <i className="fa-regular fa-trash-can"></i>
+            <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
+            <span className="sr-only">delete</span>
           </button>
         </td>
       </tr>
@@ -42,7 +44,9 @@ function Products() {
     <>
       <div className="input-group">
         <input type="text" name="search-bar" placeholder="Search products..." />
-        <button type="button">New product</button>
+        <button type="button">
+          <i className="fa-solid fa-plus" aria-hidden="true"></i>New product
+        </button>
       </div>
 
       <div className="table-wrapper">

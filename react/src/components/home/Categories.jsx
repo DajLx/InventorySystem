@@ -14,10 +14,12 @@ function Categories() {
         <td>{productsQuantity}</td>
         <td>
           <button type="button">
-            <i className="fa-regular fa-pen-to-square"></i>Edit
+            <i className="fa-regular fa-pen-to-square" aria-hidden="true"></i>
+            Edit
           </button>
           <button type="button">
-            <i className="fa-regular fa-trash-can"></i>
+            <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
+            <span className="sr-only">delete</span>
           </button>
         </td>
       </tr>
@@ -32,7 +34,9 @@ function Categories() {
           name="search-bar"
           placeholder="Search categories..."
         />
-        <button type="button">New category</button>
+        <button type="button">
+          <i className="fa-solid fa-plus" aria-hidden="true"></i>New category
+        </button>
       </div>
 
       <div className="table-wrapper">
