@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
 
 import Nav from "./home/Nav";
+import ModalLayout from "./ModalLayout";
 
 function Home() {
   return (
@@ -14,6 +15,8 @@ function Home() {
           <Outlet />
         </main>
       </div>
+
+      <ModalLayout />
     </div>
   );
 }

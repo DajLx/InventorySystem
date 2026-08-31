@@ -1,47 +1,57 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
-import ModalLayout from "../ModalLayout";
+import { openModal } from "../../features/modal/modalSlice";
+
+import { MODAL_TYPES } from "../../constants/modalTypes";
+
+const invoiceItemsStock = [
+  {
+    id: "12RD",
+    item: "Magazine",
+    supplier: "Magazines Express",
+    qty: 5,
+    price: 5.0,
+  },
+  {
+    id: "70MV",
+    item: "RMD High Definition",
+    supplier: "Fast Components",
+    qty: 2,
+    price: 7.0,
+  },
+  {
+    id: "RA14",
+    item: "Mouse pads",
+    supplier: "Thank u computa Inc.",
+    qty: 9,
+    price: 2.5,
+  },
+];
 
 function CreateInvoice() {
   const [dateValue, setDateValue] = useState("");
-  const [statusCheck, setStatusCheck] = useState(false);
 
-  const invoiceItemsStock = [];
+  const dispatch = useDispatch();
 
-  const displayTableData = (it, index) => {
-    const { id, item, supplier, amount, price } = it;
+  const totals = invoiceItemsStock.reduce(
+    (acc, item) => {
+      const itemSubtotal = item.price * item.qty;
+      const itemIva = itemSubtotal * 0.16;
 
-    return (
-      <tr key={index}>
-        <th scope="row">{id}</th>
-        <td>
-          {item} <span>{supplier}</span>
-        </td>
-        <td>{amount}</td>
-        <td>{price}</td>
-        <td>{amount * price}</td>
-        <td>{amount * price}</td>
-        <td>{amount * price}</td>
-        <td>
-          <button type="button">
-            <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
-            <span className="sr-only">delete</span>
-          </button>
-        </td>
-      </tr>
-    );
-  };
+      acc.subtotal += itemSubtotal;
+      acc.iva += itemIva;
+      acc.grandTotal += itemSubtotal + itemIva;
+
+      return acc;
+    },
+    { subtotal: 0, iva: 0, grandTotal: 0 },
+  );
 
   const setTodayDate = () => {
     const today = new Date().toISOString().split("T")[0];
 
     setDateValue(today);
-  };
-
-  const handleStatusCheck = (e) => {
-    const status = e.target.getAttribute("data-status");
-
-    setStatusCheck(statusCheck != status ? status : false);
   };
 
   return (
@@ -52,7 +62,7 @@ function CreateInvoice() {
         <div className="invoice-element invoice-element--left">
           <div className="input-wrapper">
             <label htmlFor="search-customer-bar">
-              <i className="fa-regular fa-user" aria-hidden="true"></i>
+              <i className="fa-regular fa-user" aria-hidden></i>
               <span className="sr-only">Search customer</span>
             </label>
 
@@ -64,18 +74,28 @@ function CreateInvoice() {
             />
 
             <label htmlFor="search-customer-bttn">
-              <i className="fa-solid fa-angle-down" aria-hidden="true"></i>
+              <i className="fa-solid fa-angle-down" aria-hidden></i>
               <span className="sr-only">open customer list</span>
             </label>
           </div>
 
-          <button type="button">
-            <i className="fa-solid fa-plus" aria-hidden="true"></i>
+          <button
+            type="button"
+            onClick={() =>
+              dispatch(openModal({ modalType: MODAL_TYPES.ADD_NEW_CUSTOMER }))
+            }
+          >
+            <i className="fa-solid fa-plus" aria-hidden></i>
             Add new customer
           </button>
 
-          <button type="button">
-            <i className="fa-solid fa-plus" aria-hidden="true"></i>
+          <button
+            type="button"
+            onClick={() =>
+              dispatch(openModal({ modalType: MODAL_TYPES.ADD_TO_INVOICE }))
+            }
+          >
+            <i className="fa-solid fa-plus" aria-hidden></i>
             Add to invoice
           </button>
         </div>
@@ -122,33 +142,19 @@ function CreateInvoice() {
             </div>
           </div>
 
-          <div className="invoice-status-wrapper">
-            <h3>Status</h3>
+          <fieldset className="invoice-status-fieldset">
+            <legend>Status:</legend>
 
-            <div className="checkbox-wrapper">
-              <input
-                type="checkbox"
-                name="paid-status-check"
-                id="paid-status-check"
-                data-status="paid"
-                checked={statusCheck == "paid" ? true : false}
-                onChange={handleStatusCheck}
-              />
-              <label htmlFor="paid-status-check">Paid</label>
-            </div>
+            <label>
+              <input type="radio" name="status" value={"paid"} defaultChecked />
+              Paid
+            </label>
 
-            <div className="checkbox-wrapper">
-              <input
-                type="checkbox"
-                name="pending-status-check"
-                id="pending-status-check"
-                data-status="pending"
-                checked={statusCheck == "pending" ? true : false}
-                onChange={handleStatusCheck}
-              />
-              <label htmlFor="pending-status-check">Pending</label>
-            </div>
-          </div>
+            <label>
+              <input type="radio" name="status" value={"pending"} />
+              Pending
+            </label>
+          </fieldset>
         </div>
       </div>
 
@@ -171,31 +177,51 @@ function CreateInvoice() {
             </tr>
           </thead>
 
-          <tbody>{invoiceItemsStock.map(displayTableData)}</tbody>
+          <tbody>
+            {invoiceItemsStock.map((it, index) => {
+              const itemSubtotal = it.qty * it.price;
+              const itemIva = itemSubtotal * 0.16;
+              const itemTotal = itemSubtotal + itemIva;
+
+              return (
+                <tr key={index}>
+                  <th scope="row">{it.id}</th>
+                  <td>
+                    {it.item} <i>{it.supplier}</i>
+                  </td>
+                  <td>{it.qty}</td>
+                  <td>{it.price.toFixed(2)}</td>
+                  <td>{itemSubtotal.toFixed(2)}</td>
+                  <td>{itemIva.toFixed(2)}</td>
+                  <td>{itemTotal.toFixed(2)}</td>
+                  <td>
+                    <button type="button">
+                      <i
+                        className="fa-regular fa-trash-can"
+                        aria-hidden="true"
+                      ></i>
+                      <span className="sr-only">delete</span>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
 
           <tfoot>
             <tr>
               <td colSpan={4} className="text-right">
-                <strong>Subtotal ($):</strong>
+                <strong>Summary ($):</strong>
               </td>
-              <td scope="col">00</td>
-              <td scope="col">00</td>
-              <td scope="col">00</td>
-            </tr>
-
-            <tr>
-              <td colSpan={6} className="text-right">
-                <strong>Grand total ($):</strong>
-              </td>
-              <td>
-                <strong>00</strong>
+              <td scope="col">{totals.subtotal.toFixed(2)}</td>
+              <td scope="col">{totals.iva.toFixed(2)}</td>
+              <td scope="col">
+                <strong>{totals.grandTotal.toFixed(2)}</strong>
               </td>
             </tr>
           </tfoot>
         </table>
       </div>
-
-      <ModalLayout />
     </>
   );
 }

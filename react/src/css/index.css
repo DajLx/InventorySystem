@@ -21,11 +21,11 @@ body {
   border: 0;
 }
 
-.invoice-column .input-group input[type=date] {
+.invoice-element .input-group input[type=date] {
   position: relative;
 }
 
-.invoice-column .input-group input[type=date].is-empty:not(:focus)::before {
+.invoice-element .input-group input[type=date].is-empty:not(:focus)::before {
   content: attr(data-placeholder);
   width: calc(100% - 1.2rem);
   position: absolute;
