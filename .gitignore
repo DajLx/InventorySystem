@@ -4,6 +4,7 @@ java/nbproject/build/
 java/nbproject/dist/
 java/nbproject/project.properties.properties
 java/nbproject/project.xml.properties
+modelo_texto_plano.mwb
 *.class
 *.jar
 *.war

@@ -1,0 +1,20 @@
+.invoice-element .input-group input[type="date"] {
+  position: relative;
+}
+
+.invoice-element .input-group input[type="date"].is-empty:not(:focus)::before {
+  content: attr(data-placeholder);
+  width: calc(100% - 1.2rem);
+  position: absolute;
+  top: 50%;
+
+  color: #757575;
+  background-color: #fff;
+
+  transform: translateY(-50%);
+}
+
+// .date-input-group
+
+//   input[type="date"].is-empty:not(:focus)::-webkit-calendar-picker-indicator {
+// }

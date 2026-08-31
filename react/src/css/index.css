@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  overflow: scroll;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.invoice-element .input-group input[type=date] {
+  position: relative;
+}
+
+.invoice-element .input-group input[type=date].is-empty:not(:focus)::before {
+  content: attr(data-placeholder);
+  width: calc(100% - 1.2rem);
+  position: absolute;
+  top: 50%;
+  color: #757575;
+  background-color: #fff;
+  transform: translateY(-50%);
+}
