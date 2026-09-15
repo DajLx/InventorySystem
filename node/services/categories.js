@@ -1,17 +1,25 @@
-// const pool = require("../bd");
+import pool from "../db.js";
 
-// class CategoriaServices {
-//   static columnasPermitidas = {
-//     id: "c.idcategoria",
-//     "nombre categoria": "c.nombre",
-//     "cantidad productos": "count( p.idproductos)",
-//   };
-//   static async getCategories() {
-//     const [rows, fields] = await pool.query(
-//       `SELECT c.idcategoria as ID, c.nombre as "Nombre Categoria", count( p.idproductos) as "Cantidad Productos"  FROM categoria c INNER JOIN productos p ON p.categoria_id= c.idcategoria GROUP BY c.idcategoria`,
-//     );
-//     return rows;
-//   }
-// }
+class CategoryServices {
+  static allowedCols = {
+    id: "c.id",
+    name: "c.name",
+    qty: "count(p.id)",
+  };
+  static allowedDrctns = ["ASC", "DESC"];
 
-// module.exports = CategoriaServices;
+  static async getCategories(sort, order) {
+    const sanitizedCols = this.allowedCols[sort] || this.allowedCols.id;
+    const sanitizedDrctns = this.allowedDrctns.includes(order?.toUpperCase())
+      ? order.toUpperCase()
+      : "ASC";
+
+    const [rows] = await pool.query(
+      `SELECT c.id, c.name, COUNT(p.id) AS quantity FROM categories c INNER JOIN products p ON p.category_id= c.id GROUP BY c.id ORDER BY ${sanitizedCols} ${sanitizedDrctns}`,
+    );
+
+    return rows;
+  }
+}
+
+export default CategoryServices;

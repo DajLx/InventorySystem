@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
-import userServices from "../services/users.js";
+import UserServices from "../services/users.js";
 
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await userServices.login(email, password);
+    const user = await UserServices.login(email, password);
 
     res.status(200).send({ ...user, found: true });
   } catch (err) {
@@ -19,7 +19,7 @@ export const login = async (req, res) => {
 export const signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    await userServices.signup(username, email, password);
+    await UserServices.signup(username, email, password);
 
     res.sendStatus(201);
   } catch (err) {

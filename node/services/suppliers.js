@@ -1,16 +1,26 @@
-// const pool = require("../bd");
-// class ProveedoresServices {
-//   static columnasPermitidas = {
-//     id: "idproveedor",
-//     "nombre proveedor": "nombre",
-//     contacto: "contacto",
-//     teléfono: "telefono",
-//     email:"correo"
-//   };
-//   static async getProvers() {
-//     const [rows,fields]= await pool.query(`SELECT idproveedor as ID, nombre as "Nombre Proveedor" ,contacto as Contacto, telefono as Teléfono, correo as Email from proveedor `)
-//     return rows;
-//   }
-// }
+import pool from "../db.js";
 
-// module.exports = ProveedoresServices;
+class SupplierServices {
+  static allowedCols = {
+    id: "id",
+    name: "name",
+    contact: "contact",
+    email: "email",
+  };
+  static allowedDrctns = ["ASC", "DESC"];
+
+  static async getSuppliers(sort, order) {
+    const sanitizedCols = this.allowedCols[sort] || this.allowedCols.id;
+    const sanitizedDrctns = this.allowedDrctns.includes(order?.toUpperCase())
+      ? order.toUpperCase()
+      : "ASC";
+
+    const [rows] = await pool.query(
+      `SELECT * FROM suppliers ORDER BY ${sanitizedCols} ${sanitizedDrctns}`,
+    );
+
+    return rows;
+  }
+}
+
+export default SupplierServices;

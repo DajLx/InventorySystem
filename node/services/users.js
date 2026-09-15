@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import pool from "../db.js";
 
-class userServices {
+class UserServices {
   static async login(email, password) {
     const [rows] = await pool.query("SELECT * FROM users WHERE email = ?", [
       email,
@@ -35,4 +35,4 @@ class userServices {
   }
 }
 
-export default userServices;
+export default UserServices;

@@ -1,6 +1,8 @@
-// const express = require("express");
-// const router = express.Router();
-// const { getAllProveedors } = require("../controller/proveedores");
-// router.get("/:sort", getAllProveedors);
+import { Router } from "express";
+import * as supplierControllers from "../controller/suppliers.js";
 
-// module.exports = router;
+const router = Router();
+
+router.get("/", supplierControllers.getAllSuppliers);
+
+export default router;

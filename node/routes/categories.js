@@ -1,6 +1,8 @@
-// const express= require("express")
-// const router= express.Router();
-// const {getAllCategories}= require("../controller/categoria")
-// router.get("/:sort",getAllCategories)
+import { Router } from "express";
+import * as categoryControllers from "../controller/categories.js";
 
-// module.exports= router;
+const router = Router();
+
+router.get("/", categoryControllers.getAllCategories);
+
+export default router;

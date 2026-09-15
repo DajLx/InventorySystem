@@ -1,8 +1,8 @@
-// const express= require("express")
-// const router= express.Router();
-// const {getAllProducts} = require("../controller/productos")
-// //aca iran todos los endpoints de productos.
+import { Router } from "express";
+import * as productControllers from "../controller/products.js";
 
-// router.get("/:sort", getAllProducts)
+const router = Router();
 
-// module.exports= router;
+router.get("/", productControllers.getAllProducts);
+
+export default router;

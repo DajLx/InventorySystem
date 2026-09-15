@@ -3,13 +3,13 @@ import { Router } from "express";
 const router = Router();
 
 import userRoutes from "./users.js";
-// const productosRoute= require("./productos")
-// const categoriaRoute = require("./categorias")
-// const proveedoresRoute= require("./proveedores")
+import supplierRoutes from "./suppliers.js";
+import productRoutes from "./products.js";
+import categoryRoutes from "./categories.js";
 
 router.use("/users", userRoutes);
-//  router.use("/productos", productosRoute)
-// router.use("/categorias", categoriaRoute)
-// router.use("/proveedores",proveedoresRoute)
+router.use("/suppliers", supplierRoutes);
+router.use("/products", productRoutes);
+router.use("/categories", categoryRoutes);
 
 export default router;

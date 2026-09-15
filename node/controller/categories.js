@@ -1,12 +1,12 @@
-// const CategoriaServices = require("../services/categoriasServices");
+import CategoryServices from "../services/categories.js";
 
-// const getAllCategories = async (req, res) => {
-//   try {
-//     const categories = await CategoriaServices.getCategories();
-//     res.status(200).send(categories)
-//   } catch (error) {
-//     res.status(500).send("error inesperado")
-//   }
-// };
+export const getAllCategories = async (req, res) => {
+  try {
+    const { sort, order } = req.query;
+    const categories = await CategoryServices.getCategories(sort, order);
 
-// module.exports = { getAllCategories };
+    res.status(200).send({ categories });
+  } catch (err) {
+    res.status(500).send({ error: "Unexpected error:", message: err.message });
+  }
+};
