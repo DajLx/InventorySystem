@@ -1,26 +1,30 @@
-const express = require("express");
+import "dotenv/config";
+import express, { json } from "express";
+import routes from "./routes/index.js";
+import db from "./db.js";
+
+const PORT = process.env.PORT || 3000;
 const app = express();
-const router = require("./routes");
-const bd = require("./bd");
-app.use(express.json());
-app.use("/", router);
+
+app.use(json());
+app.use("/", routes);
 
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send(err.message);
 });
 
-const iniciarServer = async () => {
+const startServer = async () => {
   try {
-    
-    const conexionInicial=await bd.getConnection();
-    conexionInicial.release()
-    console.log("se conecto a la bd correctamente");
-    app.listen(3000, () => {
-      console.log("escuchando en el puerto 3000");
-    });
-  } catch (error) {
-    console.error(error)
+    const conn = await db.getConnection();
+    console.log("Database connected successfully!");
+    conn.release();
+
+    app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
+  } catch (err) {
+    console.error("Failed to connect to database: ", err.message);
+    process.exit(1);
   }
 };
-iniciarServer();
+
+startServer();
