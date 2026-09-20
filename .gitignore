@@ -1,10 +1,13 @@
 node/node_modules/
+node/.env
 java/nbproject/private/
 java/nbproject/build/
 java/nbproject/dist/
 java/nbproject/project.properties.properties
 java/nbproject/project.xml.properties
+modelo.mwb
 modelo_texto_plano.mwb
+db-model-plain-text.sql
 *.class
 *.jar
 *.war
